@@ -33,5 +33,5 @@ Change `index.html`, commit, and push. If the repo is connected to a host
 
 ## Contact
 
-hello@bara5110.com · (619) 340-8944 · San Diego, California
+info@bara5110.com · (619) 340-8944 · San Diego, California
 BARA5110 is a creative technology studio under Bara Holdings, LLC.
