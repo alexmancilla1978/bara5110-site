@@ -220,6 +220,15 @@
 
   a:focus-visible,button:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:2px}
 
+  /* Custom circle cursor (desktop only) */
+  @media (hover:hover) and (pointer:fine){
+    html.has-dot, html.has-dot *{cursor:none !important}
+    .cursor-dot{position:fixed;top:0;left:0;width:22px;height:22px;border:2px solid var(--blue);border-radius:50%;
+      transform:translate(-50%,-50%);pointer-events:none;z-index:99999;transition:width .15s ease,height .15s ease,background .15s ease;
+      will-change:transform;mix-blend-mode:normal}
+    .cursor-dot.is-hover{width:34px;height:34px;background:rgba(30,107,255,.12)}
+  }
+
   /* RESPONSIVE */
   @media (max-width:860px){
     .studio-grid{grid-template-columns:1fr;gap:1.6rem}
@@ -535,6 +544,27 @@
   })();
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Custom circle cursor (desktop with a fine pointer only)
+  (function(){
+    if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+    const dot = document.createElement('div');
+    dot.className = 'cursor-dot';
+    document.body.appendChild(dot);
+    document.documentElement.classList.add('has-dot');
+    let x = window.innerWidth/2, y = window.innerHeight/2;
+    window.addEventListener('mousemove', (e) => {
+      x = e.clientX; y = e.clientY;
+      dot.style.transform = 'translate(' + x + 'px,' + y + 'px) translate(-50%,-50%)';
+    }, {passive:true});
+    // grow slightly over clickable things
+    const hoverSel = 'a, button, input, select, textarea, .book-tab, [role="tab"]';
+    document.addEventListener('mouseover', (e) => { if(e.target.closest(hoverSel)) dot.classList.add('is-hover'); });
+    document.addEventListener('mouseout', (e) => { if(e.target.closest(hoverSel)) dot.classList.remove('is-hover'); });
+    // hide when leaving the window
+    document.addEventListener('mouseleave', () => dot.style.opacity = '0');
+    document.addEventListener('mouseenter', () => dot.style.opacity = '1');
+  })();
 </script>
 </body>
 </html>
